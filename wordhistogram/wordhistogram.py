@@ -1,7 +1,13 @@
 #!/usr/bin/python
 
+import sys
+import shutil
 import zipfile
 import re
+
+def printUsage():
+	print 'Usage:\n wordhistogram infile dictionary'
+	print ''
 
 # Build the dictionary
 def buildDictionary(infile):
@@ -16,16 +22,47 @@ def unzip(infile, dest):
 	zip.extractall(dest)
 
 # Injest the document
-def readDoc(infile):
-	f = open(infile)
+def readDocx(infile):
+	unzip(infile,'temp')
+	f = open('temp/word/document.xml')
 	text = ''
 	for line in f:
-		text += line
+		text += line.lower()
 	f.close()
+	shutil.rmtree('temp')
+	text = re.sub(r"<[^>]*.", "", text)
 	return text
 
-dictionary = buildDictionary('dictionary')
-unzip('Test.docx','temp')
-words = readDoc('temp/word/document.xml')
-words = re.sub(r"<[^>]*.", "", words)
-print words
+# Create the histogram
+def createHistogram(dictionary, string):
+	results = []
+	for entry in dictionary:
+		regex = entry.lower()
+		count = len(re.findall(regex, string))
+		results.append((entry,count))
+	results = sorted(results, key=lambda x: x[1], reverse=True)
+	return results
+
+# Format and print the results
+def printResults(output):
+	print ' %15s %3s' % ('Dictionary  ','Cnt')
+	print ' %15s %3s' % ('===============','===')
+	for item in output:
+		print ' %15s %3s' % (item[0], item[1])
+
+# Process command line args
+if (len(sys.argv) != 3): 
+	printUsage()
+	exit(1)
+
+# Extract text from the input file
+words = readDocx(sys.argv[1])
+
+# Build the dictionary
+dictionary = buildDictionary(sys.argv[2])
+
+# Create the histogram
+results = createHistogram(dictionary,words)
+
+# Print the output
+printResults(results)
