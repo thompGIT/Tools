@@ -1,5 +1,12 @@
 #!/usr/bin/python
 
+#===========================================================
+# wordhistogram.py
+#
+# Creates a histogram based of a MS Word .docx based on a 
+#  predefined dictionary.
+#===========================================================
+
 import sys
 import shutil
 import zipfile
