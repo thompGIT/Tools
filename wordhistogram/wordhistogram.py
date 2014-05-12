@@ -11,6 +11,7 @@ import sys
 import shutil
 import zipfile
 import re
+import operator
 
 def printUsage():
 	print 'Usage:\n wordhistogram infile dictionary'
@@ -40,14 +41,25 @@ def readDocx(infile):
 	text = re.sub(r"<[^>]*.", "", text)
 	return text
 
+# Create a global histogram
+def createHistogram(string):
+	results = {}
+	words = re.findall('[\w]+',string)
+	for word in words:
+		if word not in results:
+			results[word] = 0
+		results[word] += 1
+	results = sorted(results.iteritems(), key=operator.itemgetter(1), reverse=True)
+	return results
+
 # Create the histogram
-def createHistogram(dictionary, string):
-	results = []
+def createDictionaryHistogram(dictionary, string):
+	results = {} 
 	for entry in dictionary:
 		regex = entry.lower()
 		count = len(re.findall(regex, string))
-		results.append((entry,count))
-	results = sorted(results, key=lambda x: x[1], reverse=True)
+		results[entry] = count
+	results = sorted(results.iteritems(), key=operator.itemgetter(1), reverse=True)
 	return results
 
 # Format and print the results
@@ -68,8 +80,22 @@ words = readDocx(sys.argv[1])
 # Build the dictionary
 dictionary = buildDictionary(sys.argv[2])
 
-# Create the histogram
-results = createHistogram(dictionary,words)
+# Create the raw histogram
+hist = createHistogram(words)
+
+# Create the dictionary histogram
+results = createDictionaryHistogram(dictionary,words)
 
 # Print the output
+print '---------------------'
+print 'Dictionary Hits'
 printResults(results)
+print '---------------------'
+
+# Print the output
+print '\n'
+print '---------------------'
+print 'Document Histogram'
+printResults(hist)
+print '---------------------'
+
