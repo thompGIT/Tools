@@ -46,6 +46,7 @@ def createHistogram(string):
 	results = {}
 	words = re.findall('[\w]+',string)
 	for word in words:
+		word = word.lower()
 		if word not in results:
 			results[word] = 0
 		results[word] += 1
