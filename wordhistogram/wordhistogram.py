@@ -16,6 +16,16 @@ import operator
 def printUsage():
 	print 'Usage:\n wordhistogram infile dictionary'
 	print ''
+   
+def createReport(results, outfile):	
+	reportXML  = '<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet type="text/xsl" href="report.xsl"?>\n'
+	reportXML += '<report>\n'
+	for item in results:
+		reportXML += '<entry>\n<word>%s</word>\n<count>%s</count>\n</entry>\n' % (item[0], item[1])
+	reportXML += '</report>\n'
+	f = open(outfile, 'w')
+	f.write(reportXML)
+	f.close()
 
 # Build the dictionary
 def buildDictionary(infile):
@@ -88,15 +98,16 @@ hist = createHistogram(words)
 results = createDictionaryHistogram(dictionary,words)
 
 # Print the output
-print '---------------------'
-print 'Dictionary Hits'
-printResults(results)
-print '---------------------'
+#print '---------------------'
+#print 'Dictionary Hits'
+#printResults(results)
+createReport(results,sys.argv[1] + '.DictHits.xml')
+#print '---------------------'
 
 # Print the output
-print '\n'
-print '---------------------'
-print 'Document Histogram'
-printResults(hist)
-print '---------------------'
-
+#print '\n'
+#print '---------------------'
+#print 'Document Histogram'
+#printResults(hist)
+createReport(hist,sys.argv[1] + '.Hist.xml')
+#print '---------------------'
