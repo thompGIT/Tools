@@ -51,6 +51,17 @@ def readDocx(infile):
 	text = re.sub(r"<[^>]*.", "", text)
 	return text
 
+# Extract sentences from the document containing specific words
+def extractSententenceWithWords(wordsToMatch, string):
+    results = {}
+    sentences = re.findall('([A-Za-z0-9][^.]*[U\.S\.]*[^.]*[\.!?])', string)
+#sentences = re.findall('([A-Za-z][^\.?!]*[\.!?])', string)
+#  sentences = re.findall('(?i)([a-z][^.?!]*?)?(?<!\\w)(dog|cat|leopard)(?!\\w)[^.?!]*?[.?!]', string)
+    for sentence in sentences:
+        print '[' + sentence + ']'
+    
+
+
 # Create a global histogram
 def createHistogram(string):
 	results = {}
@@ -87,6 +98,9 @@ if (len(sys.argv) != 3):
 
 # Extract text from the input file
 words = readDocx(sys.argv[1])
+
+# Extract "shall"-like entries
+shalls = extractSententenceWithWords('shall', words)
 
 # Build the dictionary
 dictionary = buildDictionary(sys.argv[2])
