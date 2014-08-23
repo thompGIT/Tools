@@ -12,7 +12,7 @@ function debug(msg) {
 /* called when the page loads */
 function WebDashInit() {
     CreateProgramBudgetChart('FartWeasel','container0')
-    CreateProgramBudgetChart('SnotRocket','container1')
+    CreateStaffingNeedsChart('container1')
     CreateProgramBudgetChart('Woozle','container2')
     CreateProgramBudgetChart('Hefalump','container3')
 }
@@ -109,7 +109,76 @@ function CreateProgramBudgetChart(program, container) {
             }
         }]
     });
-
-    $('#containter1').highcharts(chart1);
-
 }
+
+function CreateStaffingNeedsChart(container) {
+    var chart1 = new Highcharts.Chart({
+        chart: {
+            type: 'column',
+            renderTo: container
+        },
+        title: {
+            text: 'Open Engineering Positions'
+        },
+        subtitle: {
+            text: 'Last Updated: 08/23/2014'
+        },
+        xAxis: {
+            categories: ['FartWeasel', 'Program X', 'Program Y', 'Program Z', 'Cyber Monkeys']
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Total Positions'
+            },
+            stackLabels: {
+                enabled: true,
+                style: {
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                }
+            }
+        },
+        legend: {
+            align: 'right',
+            x: -70,
+            verticalAlign: 'top',
+            y: 20,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+            borderColor: '#CCC',
+            borderWidth: 1,
+            shadow: true
+        },
+        tooltip: {
+            formatter: function () {
+                return '<b>' + this.x + '</b><br/>' +
+                    this.series.name + ': ' + this.y + '<br/>' +
+                    'Total: ' + this.point.stackTotal;
+            }
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                    style: {
+                        textShadow: '0 0 3px black, 0 0 3px black'
+                    }
+                }
+            }
+        },
+        series: [{
+            name: 'Dev',
+            data: [5, 3, 4, 7, 2]
+        }, {
+            name: 'VR',
+            data: [2, 2, 3, 2, 1]
+        }, {
+            name: 'RE',
+            data: [3, 4, 4, 2, 5]
+        }]
+    });
+}
+
