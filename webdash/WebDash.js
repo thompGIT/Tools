@@ -14,7 +14,6 @@ function WebDashInit() {
     CreateProgramBudgetChart('FartWeasel','container0')
     CreateStaffingNeedsChart('container1')
     CreateProgramBudgetChart('Woozle','container2')
-    CreateProgramBudgetChart('Hefalump','container3')
 }
 
 function CreateProgramBudgetChart(program, container) {
