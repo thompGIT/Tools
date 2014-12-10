@@ -11,7 +11,8 @@ function debug(msg) {
 
 /* called when the page loads */
 function WebDashInit() {
-    CreateProgramBudgetChart('FartWeasel','container0')
+//    CreateProgramBudgetChart('FartWeasel','container0')
+    CreateProgramStatusChart('container0')
     CreateStaffingNeedsChart('container1')
     CreateProgramBudgetChart('Woozle','container2')
 }
@@ -178,6 +179,75 @@ function CreateStaffingNeedsChart(container) {
             name: 'RE',
             data: [3, 4, 4, 2, 5]
         }]
+    });
+}
+
+
+function CreateProgramStatusChart(container) {
+    var chart1 = new Highcharts.Chart({
+        chart: {
+            type: 'pie',
+            renderTo: container
+        },
+        title: {
+            text: 'Program Health - December 2014'
+        },
+        subtitle: {
+            text: 'Click the slices to view programs.'
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },        
+        
+        series: [{
+            name: 'Areas',
+            colorByPoint: true,
+            data: [{
+                name: 'One',
+                y: 5,
+                drilldown: 'one'
+            }, {
+                name: 'Two',
+                y: 2,
+                drilldown: 'two'
+            }, {
+                name: 'Three',
+                y: 4,
+                drilldown: 'three'
+            }]
+        }],
+        drilldown: {
+            series: [{
+                id: 'one',
+                data: [
+                    ['Cats', 4],
+                    ['Dogs', 2],
+                    ['Cows', 1],
+                    ['Sheep', 2],
+                    ['Pigs', 1]
+                ]
+            }, {
+                id: 'two',
+                data: [
+                    ['Apples', 4],
+                    ['Oranges', 2]
+                ]
+            }, {
+                id: 'three',
+                data: [
+                    ['Toyota', 4],
+                    ['Opel', 2],
+                    ['Volkswagen', 2]
+                ]
+            }]
+        }
     });
 }
 
