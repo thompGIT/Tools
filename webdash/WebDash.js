@@ -14,7 +14,7 @@ function WebDashInit() {
 //    CreateProgramBudgetChart('FartWeasel','container0')
     CreateProgramStatusChart('container0')
     CreateStaffingNeedsChart('container1')
-    CreateProgramBudgetChart('Woozle','container2')
+//    CreateProgramBudgetChart('Woozle','container2')
 }
 
 function CreateProgramBudgetChart(program, container) {
@@ -251,3 +251,25 @@ function CreateProgramStatusChart(container) {
     });
 }
 
+function openFile(event) {    
+        var ext = $("input#filename").val().split(".").pop().toLowerCase();                    
+        if($.inArray(ext, ["csv"]) == -1) {
+            alert('File must be a CSV!');
+            return false;
+        }        
+        if (event.target.files != undefined) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var csvval=event.target.result.split("\n");
+                var csvvalue=csvval[0].split(",");
+                var inputrad="";
+                for(var i=0;i<csvvalue.length;i++) {
+                    var temp=csvvalue[i];
+                    var inputrad=inputrad+" "+temp;
+                }
+                $("#csvimporthint").html(inputrad);
+                $("#csvimporthinttitle").show();
+            };
+            reader.readAsText(event.target.files.item(0));
+        }
+}
