@@ -1,0 +1,10 @@
+PRAGMA foreign_keys=OFF;
+BEGIN TRANSACTION;
+CREATE TABLE programs (id INTEGER PRIMARY KEY, name TEXT);
+CREATE TABLE question_categories (id INTEGER PRIMARY KEY, text TEXT);
+CREATE TABLE questions (id INTEGER PRIMARY KEY, category NUMERIC, text TEXT, helptext TEXT);
+CREATE TABLE reports (id INTEGER PRIMARY KEY, date TEXT, program INTEGER, pointsavailable INTEGER, pointsearned INTEGER);
+CREATE TABLE surveys (id INTEGER PRIMARY KEY, date TEXT);
+CREATE TABLE surveyresponses (id INTEGER PRIMARY KEY, survey INTEGER, question INTEGER, evaluator INTEGER, score INTEGER, notes TEXT);
+CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT);
+COMMIT;
