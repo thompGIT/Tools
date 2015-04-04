@@ -1,14 +1,18 @@
 #!/usr/bin/python
 
+import sqlite3 as sql;
+import sys
 import urllib2;
 import re;
+from collections import namedtuple
 
-# ls1gto.com 'For Sale' forum
-page = 'http://www.ls1gto.com/forums/forumdisplay.php?f=19';
-token_begin = '<!-- show threads -->';
-token_end   = '<!-- end show threads -->';
+# Relative path to the database
+DB_PATH = 'scout.db'
 
-def processPost(html):
+# Structures
+Search = namedtuple("Search", "site_url trim_begin trim_end re_title re_data re_description description")
+
+def processSearch(html):
     results = []
     titles = re.findall('e_[0-9]*">.*<', html);
     times  = re.findall('[0-9].*time.*M', html);
@@ -19,6 +23,34 @@ def processPost(html):
         results.append((title,time));
     return results;
 
+
+# Return list of searches
+def getSearches():
+    QUERY = "SELECT site_url, trim_begin, trim_end, re_title, re_date, description FROM searches"
+    try:
+        con = sql.connect(DB_PATH)
+        cur = con.cursor()
+        cur.execute(QUERY)
+        results = []
+        for row in cur.fetchall():
+            results.append((row[0],row[1],row[2],row[3],row[4],row[5]))
+    except sql.Error, e:
+        print "Error %s:" % e.args[0]
+        sys.exit(1)
+    finally:
+        if con:
+            con.close()
+    return results
+
+# Main
+searches = getSearches()
+print searches
+
+
+
+
+
+'''
 # Grab the web content
 print ('Scanning page: ' + page);
 html = urllib2.urlopen(page).read();
@@ -33,3 +65,4 @@ results = processPost(result);
 
 for x in results:
     print (x);
+'''
