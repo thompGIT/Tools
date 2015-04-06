@@ -93,7 +93,8 @@ def processSearch(search,terms):
     interestingPosts = []
     for p in newPosts:
         for t in terms:
-            if (p[1].find(t) >= 0):
+            title = p[1].lowercase
+            if (title.find(t.lowercase) >= 0):
                 print 'New Interesting Post: %s' % p[1]
                 interestingPosts.append(p)
                 break
