@@ -9,12 +9,15 @@ INSERT INTO searches (site_url, trim_begin, trim_end, re_title, re_date, re_id, 
     '<!-- show threads -->',
     '<!-- end show threads -->',
     'e_[0-9]*">.*<',
-    '[0-9].*time.*M',
+    '[0-9TY].*time.*M',
     'n_[0-9]*">',
     '_[0-9]*" t.*?">',
     'LS1GTO.com For Sale forum');
 
 INSERT INTO search_terms (term) VALUES ('drag radial');
 INSERT INTO search_terms (term) VALUES ('wheel');
+INSERT INTO search_terms (term) VALUES ('coil');
+INSERT INTO search_terms (term) VALUES ('spring');
+INSERT INTO search_terms (term) VALUES ('rim');
 
 COMMIT;
