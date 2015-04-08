@@ -121,11 +121,12 @@ def executeQuery(q):
 
 # Return list of search terms
 def getSearchTerms():
-    return [x[0] for x in executeQuery("SELECT term FROM search_terms")]
+    QUERY = 'SELECT term FROM search_terms'
+    return [x[0] for x in executeQuery(QUERY)]
 
 # Return list of searches
 def getSearches():
-    QUERY = "SELECT site_url, trim_begin, trim_end, re_title, re_date, re_id, re_description FROM searches"
+    QUERY = 'SELECT site_url, trim_begin, trim_end, re_title, re_date, re_id, re_description FROM searches'
     return [(x[0],x[1],x[2],x[3],x[4],x[5],x[6]) for x in executeQuery(QUERY)]
 
 # Add an entry to the database
