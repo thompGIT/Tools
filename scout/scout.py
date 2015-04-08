@@ -93,8 +93,8 @@ def processSearch(search,terms):
     interestingPosts = []
     for p in newPosts:
         for t in terms:
-            title = p[1].lowercase
-            if (title.find(t.lowercase) >= 0):
+            title = p[1].lower()
+            if (title.find(t.lower()) >= 0):
                 print 'New Interesting Post: %s' % p[1]
                 interestingPosts.append(p)
                 break
@@ -104,17 +104,13 @@ def processSearch(search,terms):
         url = 'http://www.ls1gto.com/forums/showthread.php?t=%s' % p[0]
         emailAnnounce('Subject: %s\nUrl: %s\nTerms: %s' % (p[1],url,tString))
 
-#TODO: Create a common db search function to clean this up
-# Return list of searches
-def getSearches():
-    QUERY = "SELECT site_url, trim_begin, trim_end, re_title, re_date, re_id, re_description FROM searches"
+# Execute a query and return the results
+def executeQuery(q):
     try:
         con = sql.connect(DB_PATH)
         cur = con.cursor()
-        cur.execute(QUERY)
-        results = []
-        for row in cur.fetchall():
-            results.append((row[0],row[1],row[2],row[3],row[4],row[5],row[6]))
+        cur.execute(q)
+        results = cur.fetchall()
     except sql.Error, e:
         print "Error %s:" % e.args[0]
         sys.exit(1)
@@ -125,21 +121,12 @@ def getSearches():
 
 # Return list of search terms
 def getSearchTerms():
-    QUERY = "SELECT term FROM search_terms"
-    try:
-        con = sql.connect(DB_PATH)
-        cur = con.cursor()
-        cur.execute(QUERY)
-        results = []
-        for row in cur.fetchall():
-            results.append(row[0])
-    except sql.Error, e:
-        print "Error %s:" % e.args[0]
-        sys.exit(1)
-    finally:
-        if con:
-            con.close()
-    return results
+    return [x[0] for x in executeQuery("SELECT term FROM search_terms")]
+
+# Return list of searches
+def getSearches():
+    QUERY = "SELECT site_url, trim_begin, trim_end, re_title, re_date, re_id, re_description FROM searches"
+    return [(x[0],x[1],x[2],x[3],x[4],x[5],x[6]) for x in executeQuery(QUERY)]
 
 # Add an entry to the database
 def registerPost(post):
@@ -163,5 +150,6 @@ def registerPost(post):
 # Main
 searches = getSearches()
 search_terms = getSearchTerms()
+
 for s in searches:
     processSearch(s,search_terms)
