@@ -14,10 +14,17 @@ INSERT INTO searches (site_url, trim_begin, trim_end, re_title, re_date, re_id, 
     '_[0-9]*" t.*?">',
     'LS1GTO.com For Sale forum');
 
-INSERT INTO search_terms (term) VALUES ('drag radial');
+INSERT INTO search_terms (term) VALUES ('drag');
+INSERT INTO search_terms (term) VALUES ('radial');
 INSERT INTO search_terms (term) VALUES ('wheel');
+INSERT INTO search_terms (term) VALUES ('tire');
+INSERT INTO search_terms (term) VALUES ('exhaust');
+INSERT INTO search_terms (term) VALUES ('cat');
+INSERT INTO search_terms (term) VALUES ('pipe');
 INSERT INTO search_terms (term) VALUES ('coil');
 INSERT INTO search_terms (term) VALUES ('spring');
 INSERT INTO search_terms (term) VALUES ('rim');
+INSERT INTO search_terms (term) VALUES ('sub');
+INSERT INTO search_terms (term) VALUES ('shifter');
 
 COMMIT;
